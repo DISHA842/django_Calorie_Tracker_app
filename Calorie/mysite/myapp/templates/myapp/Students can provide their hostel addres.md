@@ -1,0 +1,3 @@
+Students can provide their hostel address as Present Residential Address. In such cases, the bonafide certificate of the institution where student is studying has to be submitted.         Applicants are required to mention their present residential address mandatorily in this column. There is separate column for permanent address. Knowingly furnishing any false information or suppressing any material information with a view to obtain a passport or travel document attracts action under section 10 and section 12 of the Passport Act, 1967.
+
+//22-0008013796

@@ -1,0 +1,318 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+</head>
+<style>
+    .hm-gradient {
+        background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+    }
+
+    .darken-grey-text {
+        color: #2E2E2E;
+    }
+
+    .input-group.md-form.form-sm.form-2 input {
+        border: 1px solid #bdbdbd;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .input-group.md-form.form-sm.form-2 input.purple-border {
+        border: 1px solid #9e9e9e;
+    }
+
+    .input-group.md-form.form-sm.form-2 input[type=text]:focus:not([readonly]).purple-border {
+        border: 1px solid #ba68c8;
+        box-shadow: none;
+    }
+
+    .form-2 .input-group-addon {
+        border: 1px solid #ba68c8;
+    }
+
+    .danger-text {
+        color: #ff3547;
+    }
+
+    .success-text {
+        color: #00C851;
+    }
+
+    .table-bordered.red-border,
+    .table-bordered.red-border th,
+    .table-bordered.red-border td {
+        border: 1px solid #ff3547 !important;
+    }
+
+    .table.table-bordered th {
+        text-align: center;
+    }
+</style>
+
+<body class="">
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">Calorie Tracker</a>
+
+        <div class="navbar">
+            <a class="nav-item nav-link" href="{% url 'catalog' %}">Catalog</a>
+            <!-- <a class="nav-item nav-link" href="#">Delete Item</a>
+            <a class="nav-item nav-link" href="#">View Item</a> -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Logout</a>
+            <span class="mx-2">
+                <a href="{% url 'profile' %}">Profile</a>
+            </span>
+            {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+
+
+    </nav>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}">
+        {{message}}
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    <div class="container">
+        <!-- <div class="row">
+            <div class="col-md-12">
+                
+            </div>
+        </div> -->
+        <br><br><br>
+        <h4>Calorie Goal</h4>
+        <br>
+        <div class="row">
+            <div class="col-md-9 offset-1">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0"
+                        aria-valuemin="0" aria-valuemax="0"></div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <form method="POST">
+                    <div class="form-group row">
+                        {% csrf_token %}
+                        <label class="col-md-3">
+                            <b>Select Food To Add in daily Consumption</b>
+                        </label>
+
+
+
+                        <select class="col-md-6 form-control" name="food_consumed" id="food_consumed">
+                            {% for food in foods %}
+                            <option value="{{food.name}}">{{food.name}}
+                                {% endfor %}
+                        </select>
+                        <div>
+                            <button class="btn btn-success" type="submit">Add</button>
+                        </div>
+
+
+                    </div>
+                </form>
+                <br>
+                <div class="row col-md-6">
+                    <b>Add Food of your Choice </b>
+                    <a class="btn btn-danger mx-4" href="{% url 'add' %}">Add Food Item</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <h4>
+                        Today's Consumption
+                    </h4>
+                </div>
+                <table id="table" class="table table-striped table-primary">
+                    <tr class="bg-primary text-white">
+                        <th>Food Item</th>
+                        <th>Carbs(gm)</th>
+                        <th>Protien(gm)</th>
+                        <th>Fats(gm)</th>
+                        <th>Calories(Kcal)</th>
+                        <th>Remove Item</th>
+                        <th>Update Item</th>
+                    </tr>
+                    {% for c in consumed_food %}
+                    <tr>
+                        <td>{{c.food_consumed.name}}</td>
+                        <td>{{c.food_consumed.carbs}}</td>
+                        <td>{{c.food_consumed.protien}}</td>
+                        <td>{{c.food_consumed.fats}}</td>
+                        <td>{{c.food_consumed.calorie}}</td>
+                        <td><a class="btn btn-danger" href="{% url 'delete' c.id %}">✖</a></td>
+                        <td><a class="btn btn-success" href="{% url 'update' c.id %}">Update</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td id="name"><b>Total</b></td>
+                        <td id="totalCarbs"><b></b></td>
+                        <td id="totalProtien"><b></b></td>
+                        <td id="totalFats"><b></b></td>
+                        <td id="totalCalories"><b></b></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div> -->
+
+    <br>
+    <div class="card mb-4">
+        <div class="mt-4">
+            <h4 class="text-uppercase text-center">
+                Today's Consumption
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <!--Table-->
+            <table id="table" class="table table-hover">
+                <!--Table head-->
+                <thead class="bg-dark">
+                    <tr class="text-white">
+
+                        <th>Food Item</th>
+                        <th>Carbs(gm)</th>
+                        <th>Protien(gm)</th>
+                        <th>Fats(gm)</th>
+                        <th>Calories(Kcal)</th>
+                        <th>Remove Item</th>
+                        <th>Update Item</th>
+                    </tr>
+                </thead>
+                <!--Table head-->
+                <!--Table body-->
+                <tbody>
+                    {% for c in consumed_food %}
+                    <tr>
+
+                        <td>{{c.food_consumed.name}}</td>
+                        <td>{{c.food_consumed.carbs}}</td>
+                        <td>{{c.food_consumed.protien}}</td>
+                        <td>{{c.food_consumed.fats}}</td>
+                        <td>{{c.food_consumed.calorie}}</td>
+                        <td><a class="btn mx-4" href="{% url 'delete' c.id %}">❌</a></td>
+                        <td><a class="btn mx-2 btn-success" href="{% url 'update' c.id %}">Update</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td id="name"><b>Total</b></td>
+                        <td id="totalCarbs"><b></b></td>
+                        <td id="totalProtien"><b></b></td>
+                        <td id="totalFats"><b></b></td>
+                        <td id="totalCalories"><b></b></td>
+                    </tr>
+
+
+                </tbody>
+                <!--Table body-->
+            </table>
+            <!--Table-->
+        </div>
+    </div>
+
+
+
+
+
+    <br>
+    <br>
+    <div class="col-md-5 offset-4 bg-white">
+        <div class="">
+            <h4 class="text-center text-uppercase">Today's Breakdown</h4>
+        </div>
+
+        <h4 class="text-center">Macronutrient Breakdown</h4>
+        <br>
+        <div class="col-md-12">
+            <canvas id="myChart" width="300" height="300"></canvas>
+        </div>
+    </div>
+    <br>
+    <br>
+
+
+
+
+
+</body>
+<script>
+    var table = document.getElementById("table");
+    var carbs = 0, protien = 0, fats = 0, calories = 0;
+    for (var i = 1; i < table.rows.length - 1; i++) {
+        console.log(table.rows[i].cells[1].innerHTML);
+        carbs += parseFloat(table.rows[i].cells[1].innerHTML);
+        carbs = Math.round(carbs);
+        protien += parseFloat(table.rows[i].cells[2].innerHTML);
+        protien = Math.round(protien);
+        fats += parseFloat(table.rows[i].cells[3].innerHTML);
+        fats = Math.round(fats);
+        calories += parseFloat(table.rows[i].cells[4].innerHTML);
+        calories = Math.round(calories);
+
+    }
+    document.getElementById("totalCarbs").innerHTML = '<b>' + carbs + '(gm)<b>';
+    document.getElementById("totalProtien").innerHTML = '<b>' + protien + '(gm)<b>';
+    document.getElementById("totalFats").innerHTML = '<b>' + fats + '(gm)<b>';
+    document.getElementById("totalCalories").innerHTML = '<b>' + calories + '(Kcal)<b>';
+    var calPer = (calories / 2000) * 100;
+    document.getElementsByClassName("progress-bar")[0].setAttribute("style", "width:" + calPer + "%");
+    var total = carbs + protien + fats;
+    var carbsP = Math.round((carbs / total) * 100);
+    var proteinP = Math.round((protien / total) * 100);
+    var fatsP = Math.round((fats / total) * 100);
+
+
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Carbs ' + carbsP + '%', 'Protein ' + proteinP + '%', 'Fats ' + fatsP + '%'],
+            datasets: [{
+                label: '# of Votes',
+                data: [carbsP, proteinP, fatsP],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+
+                ],
+                borderWidth: 1
+            }]
+        },
+
+    });
+</script>
+
+</html>
